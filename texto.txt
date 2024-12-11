@@ -123,3 +123,4 @@ Class: Spiciness
 EquivalentTo:
 and (hasCaloricContent some xsd:integer [>= 400])
 {Hot1 , Medium1 , Mild1}"} 
+###

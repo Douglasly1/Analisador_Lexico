@@ -14,11 +14,26 @@ tokens = [
 
 # Palavras reservadas específicas
 reserved_words = {
-    "SOME": "RESERVED", "ALL": "RESERVED", "VALUE": "RESERVED", "MIN": "RESERVED",
-    "MAX": "RESERVED", "EXACTLY": "RESERVED", "THAT": "RESERVED", "NOT": "RESERVED",
-    "AND": "RESERVED", "OR": "RESERVED", "some": "RESERVED", "all": "RESERVED",
-    "value": "RESERVED", "min": "RESERVED", "max": "RESERVED", "exactly": "RESERVED",
-    "that": "RESERVED", "not": "RESERVED", "and": "RESERVED", "or": "RESERVED",
+    "SOME": "RESERVED", 
+    "ALL": "RESERVED", 
+    "VALUE": "RESERVED", 
+    "MIN": "RESERVED",
+    "MAX": "RESERVED", 
+    "EXACTLY": "RESERVED", 
+    "THAT": "RESERVED", 
+    "NOT": "RESERVED",
+    "AND": "RESERVED", 
+    "OR": "RESERVED", 
+    "some": "RESERVED", 
+    "all": "RESERVED",
+    "value": "RESERVED", 
+    "min": "RESERVED", 
+    "max": "RESERVED", 
+    "exactly": "RESERVED",
+    "that": "RESERVED", 
+    "not": "RESERVED", 
+    "and": "RESERVED", 
+    "or": "RESERVED",
 }
 
 types = {
@@ -107,6 +122,10 @@ def t_newline(t):
 
 # Ignorar espaços e tabulações
 t_ignore = ' \t'
+
+def t_COMMENT(t):
+    r'\#'
+    pass
 
 def t_error(t):
     symbol_table.append({
