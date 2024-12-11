@@ -3,39 +3,22 @@ import ply.lex as lex
 
 # Lista de tokens
 tokens = [
-    "RESERVED",
+    "NAMESPACEID", 
     "TYPE",
+    "RESERVED",
     "CLASS",
     "PROPERTY",
-    "INDIVIDUAL",
-    "DATATYPE",
     "INTEGER",
     "SYMBOL",
-    "NAMESPACEID"
 ]
 
 # Palavras reservadas específicas
 reserved_words = {
-    "SOME": "RESERVED",
-    "ALL": "RESERVED",
-    "VALUE": "RESERVED",
-    "MIN": "RESERVED",
-    "MAX": "RESERVED",
-    "EXACTLY": "RESERVED",
-    "THAT": "RESERVED",
-    "NOT": "RESERVED",
-    "AND": "RESERVED",
-    "OR": "RESERVED",
-    "some": "RESERVED",
-    "all": "RESERVED",
-    "value": "RESERVED",
-    "min": "RESERVED",
-    "max": "RESERVED",
-    "exactly": "RESERVED",
-    "that": "RESERVED",
-    "not": "RESERVED",
-    "and": "RESERVED",
-    "or": "RESERVED",
+    "SOME": "RESERVED", "ALL": "RESERVED", "VALUE": "RESERVED", "MIN": "RESERVED",
+    "MAX": "RESERVED", "EXACTLY": "RESERVED", "THAT": "RESERVED", "NOT": "RESERVED",
+    "AND": "RESERVED", "OR": "RESERVED", "some": "RESERVED", "all": "RESERVED",
+    "value": "RESERVED", "min": "RESERVED", "max": "RESERVED", "exactly": "RESERVED",
+    "that": "RESERVED", "not": "RESERVED", "and": "RESERVED", "or": "RESERVED",
 }
 
 types = {
@@ -45,18 +28,30 @@ types = {
     "SubClassOf:": "TYPE",
     "DisjointClasses:": "TYPE",
 }
-## 
+
+# Funções de definição dos tokens
+def t_NAMESPACEID(t):
+    r'\b(xsd|rdf|owl|rdfs):[a-zA-Z][a-zA-Z0-9_]*\b'
+    symbol_table.append({
+        "Lexema": t.value,
+        "Token": "NAMESPACEID",
+        "Linha": t.lineno
+    })
+    token_counts["NAMESPACEID"] += 1
+    return t
+
 def t_SYMBOL(t):
     r"[\[\]\{\}=\,\"\(\)><,]"
     symbol_table.append({
       "Lexema": t.value,
-      "Token": "Símbolo",
+      "Token": "SYMBOL",
       "Linha": t.lineno
     })
+    token_counts["SYMBOL"] += 1
     return t
 
 def t_TYPE(t):
-    r'\b(Class|EquivalentTo|Individuals|SubClassOf|DisjointClasses|):'
+    r'\b(Class|EquivalentTo|Individuals|SubClassOf|DisjointClasses):'
     symbol_table.append({
         "Lexema": t.value,
         "Token": "TYPE",
@@ -92,7 +87,6 @@ def t_PROPERTY(t):
         "Token": "PROPERTY",
         "Linha": t.lineno
     })
-     #Contador de tokens
     token_counts["PROPERTY"] += 1
     return t
 
@@ -101,30 +95,17 @@ def t_INTEGER(t):
     t.value = int(t.value)
     symbol_table.append({
         "Lexema": str(t.value),
-        "Token": "Inteiro",
+        "Token": "INTEGER",
         "Linha": t.lineno
     })
-     #Contador de tokens
     token_counts["INTEGER"] += 1
     return t
-
-def t_NAMESPACEID(t):
-    r'\b(xsd|rdf|owl):[a-zA-Z][a-zA-Z0-9_]*\b'
-    symbol_table.append({
-        "Lexema": t.value,
-        "Token": "Namespace ID",
-        "Linha": t.lineno
-    })
-    #Contador de tokens
-    token_counts["NAMESPACEID"] += 1
-    return t
-
 
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-##Ignora espaços em branco e tabulações
+# Ignorar espaços e tabulações
 t_ignore = ' \t'
 
 def t_error(t):
@@ -133,32 +114,32 @@ def t_error(t):
         "Token": "Caractere Inválido",
         "Linha": t.lineno
     })
-   
     token_counts["INVALID"] += 1
     t.lexer.skip(1)
 
+# Inicializa o lexer
 lexer = lex.lex()
 
 # Lista para armazenar os símbolos
 symbol_table = []
 
-
+# Contadores de tokens
 token_counts = {
+    "PROPERTY": 0,
     "TYPE": 0,
     "RESERVED": 0,
     "CLASS": 0,
-    "PROPERTY": 0,
-    "INTEGER": 0,
+    "SYMBOL": 0,
+    "INTEGER": 0,   
     "NAMESPACEID": 0,
     "INVALID": 0
 }
 
+# Processa o arquivo
 def process_file(file_path):
-    # Abre o arquivo e lê o conteúdo
     with open(file_path, 'r') as file:
         input_text = file.read()
 
-    # Processa o conteúdo do arquivo com o lexer
     lexer.input(input_text)
     
     while tok := lexer.token():
@@ -172,7 +153,7 @@ def process_file(file_path):
     for token_type, count in token_counts.items():
         print(f"{token_type}: {count}")
 
+# Executa o analisador
 if __name__ == "__main__":
-    # Caminho para o arquivo de texto a ser analisado
-    file_path = '/home/douglasly/Analisador_Lexico/texto.txt'  
+    file_path = '/home/douglasly/Área de Trabalho/Nova pasta/Analisador_lexico/texto.txt'  
     process_file(file_path)
