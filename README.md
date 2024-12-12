@@ -31,11 +31,13 @@ sudo apt install python3.10
 ```
    ---------------------
 # Estrutura do repositório
+```
 /analisador_lexico
-   ├── texto.txt            # Arquivo de exemplo para análise
-   ├── analisador.py        # Script principal
-   ├── README.md            # Este arquivo
-
+   ├── Arquivo_de_Teste.txt  # Arquivo de exemplo para análise
+   ├── README.md             # Este arquivo
+   ├── analisador.py         # Script principal
+   ├── texto.txt             # Arquivo de exemplo para análise
+```
 
 # Utilização
 
